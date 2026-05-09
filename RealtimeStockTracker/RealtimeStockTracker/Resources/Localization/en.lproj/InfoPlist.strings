@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  RealtimeStockTracker
+
+  Created by Ankit Sabharwal on 09/05/26.
+  
+*/
+
+"CFBundleDisplayName" = "Stock Tracker";

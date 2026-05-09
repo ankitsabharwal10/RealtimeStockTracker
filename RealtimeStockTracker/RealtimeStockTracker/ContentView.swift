@@ -10,10 +10,12 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         VStack {
+            // TODO: Need to Remove
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Text(CoreUIStrings.stocksTitle.localizedText)
+            Text(CoreAppConfig.socketURL.absoluteString)
         }
         .padding()
     }

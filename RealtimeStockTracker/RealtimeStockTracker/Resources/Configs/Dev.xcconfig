@@ -1,0 +1,13 @@
+//
+//  Dev.xcconfig
+//  RealtimeStockTracker
+//
+//  Created by Ankit Sabharwal on 09/05/26.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://developer.apple.com/documentation/xcode/adding-a-build-configuration-file-to-your-project
+
+SOCKET_SCHEME = wss
+SOCKET_HOST = ws.postman-echo.com
+SOCKET_PATH = /raw

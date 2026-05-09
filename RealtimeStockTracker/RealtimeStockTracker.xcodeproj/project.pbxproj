@@ -10,9 +10,22 @@
 		CE74F9842FAE21EE008E6A36 /* RealtimeStockTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RealtimeStockTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		CE6FCA2B2FAF4F9100B6CDDF /* Exceptions for "RealtimeStockTracker" folder in "RealtimeStockTracker" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/Info.plist,
+			);
+			target = CE74F9832FAE21EE008E6A36 /* RealtimeStockTracker */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		CE74F9862FAE21EE008E6A36 /* RealtimeStockTracker */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				CE6FCA2B2FAF4F9100B6CDDF /* Exceptions for "RealtimeStockTracker" folder in "RealtimeStockTracker" target */,
+			);
 			path = RealtimeStockTracker;
 			sourceTree = "<group>";
 		};
@@ -91,6 +104,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ar,
 			);
 			mainGroup = CE74F97B2FAE21EE008E6A36;
 			minimizedProjectReferenceProxies = 1;
@@ -125,8 +139,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		CE74F98D2FAE21F0008E6A36 /* Debug */ = {
+		CE74F98D2FAE21F0008E6A36 /* Dev */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = CE74F9862FAE21EE008E6A36 /* RealtimeStockTracker */;
+			baseConfigurationReferenceRelativePath = Resources/Configs/Dev.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -187,10 +203,12 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
-			name = Debug;
+			name = Dev;
 		};
-		CE74F98E2FAE21F0008E6A36 /* Release */ = {
+		CE74F98E2FAE21F0008E6A36 /* Prod */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = CE74F9862FAE21EE008E6A36 /* RealtimeStockTracker */;
+			baseConfigurationReferenceRelativePath = Resources/Configs/Prod.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -244,10 +262,12 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
-			name = Release;
+			name = Prod;
 		};
-		CE74F9902FAE21F0008E6A36 /* Debug */ = {
+		CE74F9902FAE21F0008E6A36 /* Dev */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = CE74F9862FAE21EE008E6A36 /* RealtimeStockTracker */;
+			baseConfigurationReferenceRelativePath = Resources/Configs/Dev.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -256,11 +276,13 @@
 				DEVELOPMENT_TEAM = 9S7SQQNTUW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RealtimeStockTracker/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -269,17 +291,23 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.swift.RealtimeStockTracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
-			name = Debug;
+			name = Dev;
 		};
-		CE74F9912FAE21F0008E6A36 /* Release */ = {
+		CE74F9912FAE21F0008E6A36 /* Prod */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = CE74F9862FAE21EE008E6A36 /* RealtimeStockTracker */;
+			baseConfigurationReferenceRelativePath = Resources/Configs/Prod.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -288,11 +316,13 @@
 				DEVELOPMENT_TEAM = 9S7SQQNTUW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RealtimeStockTracker/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -301,14 +331,18 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.swift.RealtimeStockTracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
-			name = Release;
+			name = Prod;
 		};
 /* End XCBuildConfiguration section */
 
@@ -316,20 +350,20 @@
 		CE74F97F2FAE21EE008E6A36 /* Build configuration list for PBXProject "RealtimeStockTracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CE74F98D2FAE21F0008E6A36 /* Debug */,
-				CE74F98E2FAE21F0008E6A36 /* Release */,
+				CE74F98D2FAE21F0008E6A36 /* Dev */,
+				CE74F98E2FAE21F0008E6A36 /* Prod */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Prod;
 		};
 		CE74F98F2FAE21F0008E6A36 /* Build configuration list for PBXNativeTarget "RealtimeStockTracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CE74F9902FAE21F0008E6A36 /* Debug */,
-				CE74F9912FAE21F0008E6A36 /* Release */,
+				CE74F9902FAE21F0008E6A36 /* Dev */,
+				CE74F9912FAE21F0008E6A36 /* Prod */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Prod;
 		};
 /* End XCConfigurationList section */
 	};
