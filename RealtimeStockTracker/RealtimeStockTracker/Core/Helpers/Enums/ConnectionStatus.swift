@@ -7,8 +7,8 @@
 
 import Foundation
 
-enum ConnectionStatus {
+enum ConnectionStatus: Equatable {
     case connected
     case disconnected
-    case failed(Error)
+    case failed(WebSocketError)
 }

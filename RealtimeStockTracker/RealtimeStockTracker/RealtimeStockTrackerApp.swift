@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct RealtimeStockTrackerApp: App {
+    // MARK: Properties
+    @StateObject private var stockService = StockService(stockProvider: StockProvider(),
+                                                         webSocketClient: MockWebSocketClient())
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            StocksListView(viewModel: StocksListViewModel(stockService: stockService))
         }
     }
 }

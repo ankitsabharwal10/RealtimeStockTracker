@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 @MainActor
-final class StockService {
+final class StockService: ObservableObject {
     // MARK: Published Properties
     @Published
     private(set) var stocks: [Stock] = []
@@ -34,6 +34,8 @@ final class StockService {
     }
     
     func connect() {
+        guard serviceTask == nil else { return }
+        
         webSocketClient.connect()
         
         serviceTask = Task {
@@ -48,8 +50,9 @@ final class StockService {
     }
     
     func disconnect() {
-        serviceTask?.cancel()
         webSocketClient.disconnect()
+        serviceTask?.cancel()
+        serviceTask = nil
     }
 }
 
@@ -89,7 +92,21 @@ private extension StockService {
     
     func apply(_ update: StockPriceUpdate) {
         guard let index = stocks.firstIndex(where: { $0.symbol == update.symbol }) else { return }
-        stocks[index].previousPrice = stocks[index].currentPrice
-        stocks[index].currentPrice = update.price
+        var updatedStock = stocks[index]
+        updatedStock.previousPrice = stocks[index].currentPrice
+        updatedStock.currentPrice = update.price
+        stocks[index] = updatedStock
+        debugPrint(updatedStock)
+    }
+}
+
+extension StockService {
+    static var preview: StockService {
+        let service = StockService(
+            stockProvider: StockProvider(),
+            webSocketClient: MockWebSocketClient()
+        )
+        service.stocks = StockSymbol.allStocks
+        return service
     }
 }

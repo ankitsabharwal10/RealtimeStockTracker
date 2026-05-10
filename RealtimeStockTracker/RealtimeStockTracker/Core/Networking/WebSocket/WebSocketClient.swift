@@ -43,7 +43,7 @@ extension WebSocketClient {
         latestConnectionStatus = .disconnected
         connectionStatusContinuation?.yield(.disconnected)
         messageContinuation?.finish() // End of Iteration
-        connectionStatusContinuation?.finish()
+        connectionStatusContinuation?.finish() // End of Iteration
         messageContinuation = nil
         connectionStatusContinuation = nil
     }
@@ -89,7 +89,7 @@ extension WebSocketClient {
                 weakSelf.receiveMessage()
                 
             case .failure(let error):
-                weakSelf.connectionStatusContinuation?.yield(.failed(error))
+                weakSelf.connectionStatusContinuation?.yield(.failed(.unknown(error.localizedDescription)))
                 weakSelf.messageContinuation?.finish(throwing: error)
             }
         }

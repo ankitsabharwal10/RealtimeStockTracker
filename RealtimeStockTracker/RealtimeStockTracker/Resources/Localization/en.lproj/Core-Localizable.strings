@@ -7,3 +7,8 @@
 */
 
 "StocksTitle" = "Stocks";
+"StockDetailsTitle" = "Stock Details";
+"StartFeed" = "Start Feed";
+"StopFeed" = "Stop Feed";
+"PriceOption" = "Price";
+"PriceChangeOption" = "Price Change";

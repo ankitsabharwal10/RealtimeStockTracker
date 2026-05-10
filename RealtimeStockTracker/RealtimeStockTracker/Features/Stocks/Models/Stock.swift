@@ -21,4 +21,12 @@ struct Stock: Identifiable {
     var isPositive: Bool {
         priceChange >= 0
     }
+    
+    var formattedCurrentPrice: String {
+        currentPrice.formatted(.currency(code: "AED"))
+    }
+    
+    var priceChangeStr: String {
+        priceChange.formatted()
+    }
 }

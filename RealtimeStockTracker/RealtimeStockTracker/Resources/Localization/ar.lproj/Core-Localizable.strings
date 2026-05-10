@@ -7,3 +7,8 @@
 */
 
 "StocksTitle" = "الأسهم";
+"StockDetailsTitle" = "تفاصيل السهم";
+"StartFeed" = "بدء البث";
+"StopFeed" = "إيقاف البث";
+"PriceOption" = "السعر";
+"PriceChangeOption" = "تغير السعر";

@@ -9,6 +9,11 @@ import Foundation
 
 enum CoreUIStrings: String {
     case stocksTitle = "StocksTitle"
+    case stockDetailsTitle = "StockDetailsTitle"
+    case startFeed = "StartFeed"
+    case stopFeed = "StopFeed"
+    case priceOption = "PriceOption"
+    case priceChangeOption = "PriceChangeOption"
 }
 
 extension CoreUIStrings: CoreLocalizationProvidable {

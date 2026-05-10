@@ -44,6 +44,15 @@ enum StockSymbol: String, CaseIterable {
                   previousPrice: $0.initialPrice)
         }
     }
+    
+    static var defaultStock: Stock {
+        Stock(id: airbnb.rawValue,
+              symbol: airbnb.rawValue,
+              name: airbnb.companyName,
+              description: airbnb.description,
+              currentPrice: airbnb.initialPrice,
+              previousPrice: airbnb.initialPrice)
+    }
 }
 
 // MARK: Company Name

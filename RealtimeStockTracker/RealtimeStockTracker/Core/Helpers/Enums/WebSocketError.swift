@@ -7,6 +7,7 @@
 
 import Foundation
 
-enum WebSocketError: Error {
+enum WebSocketError: Error, Equatable {
     case notConnected
+    case unknown(String)
 }
