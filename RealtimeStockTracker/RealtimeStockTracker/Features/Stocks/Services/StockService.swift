@@ -35,17 +35,22 @@ final class StockService: ObservableObject {
     
     func connect() {
         guard serviceTask == nil else { return }
+            
+        let connectionTask = Task {
+            await listenConnectionStatus()
+        }
         
-        webSocketClient.connect()
-        
-        serviceTask = Task {
-            async let connectionTask: Void = listenConnectionStatus()
-            async let messageTask: Void = listenMessages()
-            async let streamingTask: Void = startStreaming()
+        let messageTask = Task {
+            await listenMessages()
+        }
 
-            let _ = await (connectionTask,
-                           messageTask,
-                           streamingTask)
+        webSocketClient.connect()
+
+        serviceTask = Task {
+            await startStreaming()
+            
+            connectionTask.cancel()
+            messageTask.cancel()
         }
     }
     
