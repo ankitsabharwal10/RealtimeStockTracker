@@ -13,6 +13,17 @@ final class MockWebSocketClient: WebSocketClientProvidable {
     private var connectionStatusContinuation: AsyncStream<ConnectionStatus>.Continuation?
     private var latestConnectionStatus: ConnectionStatus = .disconnected
 
+    var isReady: Bool {
+        messageContinuation != nil &&
+        connectionStatusContinuation != nil
+    }
+    
+    func waitUntilReady() async {
+        while !isReady {
+            await Task.yield()
+        }
+    }
+    
     func connect() {
         latestConnectionStatus = .connected
         connectionStatusContinuation?.yield(.connected)
@@ -28,6 +39,10 @@ final class MockWebSocketClient: WebSocketClientProvidable {
     }
     
     func send(_ text: String) async throws {
+        messageContinuation?.yield(text)
+    }
+    
+    func simulateIncomingMessage(_ text: String) {
         messageContinuation?.yield(text)
     }
     

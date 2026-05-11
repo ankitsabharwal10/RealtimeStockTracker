@@ -12,9 +12,8 @@ import Foundation
 final class StocksListViewModel: ObservableObject {
     
     // MARK: Published Properties
-    @Published var stocks: [Stock] = []
-    @Published var isLoading: Bool = false
-    @Published var connectionStatus: ConnectionStatus = .disconnected
+    @Published private(set) var viewState: ViewState<[Stock]> = .idle
+    @Published private(set) var connectionStatus: ConnectionStatus = .disconnected
     @Published var sortOption: SortOption = .price {
         didSet {
             applySorting()
@@ -24,11 +23,13 @@ final class StocksListViewModel: ObservableObject {
     // MARK: Properties
     private var observationTask: Task<Void, Never>?
     var stockService: StockService
-    var startFeedTitle: String {
-        return CoreUIStrings.startFeed.localizedText
+    
+    // MARK: Computed Properties
+    var screenTitle: String {
+        return CoreUIStrings.stocksTitle.localizedText
     }
-    var stopFeedTitle: String {
-        return CoreUIStrings.stopFeed.localizedText
+    var buttonTitle: String {
+        connectionStatus == .connected ? CoreUIStrings.stopFeed.localizedText : CoreUIStrings.startFeed.localizedText
     }
 
     init(stockService: StockService) {
@@ -42,10 +43,8 @@ final class StocksListViewModel: ObservableObject {
         switch stockService.connectionStatus {
         case .connected:
             stockService.disconnect()
-        case .disconnected:
+        case .disconnected, .failed:
             stockService.connect()
-        case .failed(let error):
-            debugPrint(error)
         }
     }
     
@@ -57,14 +56,13 @@ final class StocksListViewModel: ObservableObject {
 private extension StocksListViewModel {
     func fetchStocks() {
         Task {
-            isLoading = true
-            defer {
-                isLoading = false
-            }
+            viewState = .loading
+    
             do {
                 try await stockService.fetchStocks()
+                updateStocks(stockService.stocks)
             } catch {
-                debugPrint(error.localizedDescription)
+                viewState = .failure(error.localizedDescription)
             }
         }
     }
@@ -80,7 +78,7 @@ private extension StocksListViewModel {
     
     func listenStocks() async {
         for await updatedStocks in stockService.$stocks.values {
-            stocks = sortedStocks(from: updatedStocks)
+            updateStocks(updatedStocks)
         }
     }
     
@@ -91,7 +89,7 @@ private extension StocksListViewModel {
     }
     
     func applySorting() {
-        stocks = sortedStocks(from: stockService.stocks)
+        updateStocks(stockService.stocks)
     }
     
     func sortedStocks(from stocks: [Stock]) -> [Stock] {
@@ -101,5 +99,10 @@ private extension StocksListViewModel {
         case .priceChange:
             return stocks.sorted { $0.priceChange > $1.priceChange }
         }
+    }
+    
+    func updateStocks(_ stocks: [Stock]) {
+        let sortedStocks = sortedStocks(from: stocks)
+        viewState = sortedStocks.isEmpty ? .empty : .success(sortedStocks)
     }
 }

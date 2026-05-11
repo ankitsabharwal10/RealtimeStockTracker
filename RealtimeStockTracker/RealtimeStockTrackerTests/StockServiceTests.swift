@@ -90,7 +90,8 @@ extension StockServiceTests {
                 
         service.connect() // Establishing the connection
 
-        await Task.yield()
+        await socket.waitUntilReady()
+
         guard let stock = service.stocks.first else {
             XCTFail("Missing Stock")
             return
@@ -104,11 +105,9 @@ extension StockServiceTests {
             return
         }
             
-        try await socket.send(json)
+        socket.simulateIncomingMessage(json)
         
-        try await Task.sleep(
-            for: .milliseconds(100)
-        )
+        await Task.yield()
         
         let updatedStock = service.stocks
             .first {

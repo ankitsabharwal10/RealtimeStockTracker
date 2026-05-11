@@ -8,26 +8,59 @@
 import SwiftUI
 
 struct StocksListView: View {
-//    // MARK: - Properties
+    //    // MARK: - Properties
     @StateObject
     var viewModel: StocksListViewModel
     
     // MARK: - Body
     var body: some View {
         NavigationStack {
-            Group {
-                if viewModel.stocks.isEmpty {
-                    EmptyStateView()
-                } else {
-                    stocksList
-                }
-            }
-            .navigationTitle(
-                "Real-Time Stocks"
-            )
+            content
+                .navigationTitle(viewModel.screenTitle)
         }
     }
 }
+
+private extension StocksListView {
+    @ViewBuilder
+    var content: some View {
+        switch viewModel.viewState {
+        case .idle, .loading:
+            ProgressView()
+        case .empty:
+            EmptyStateView()
+        case .success(let stocks):
+            stocksList(stocks)
+        case .failure(let errorMessage):
+            Text(errorMessage)
+        }
+    }
+}
+
+// MARK: Stock List
+private extension StocksListView {
+    func stocksList(_ stocks: [Stock]) -> some View {
+        VStack(spacing: 16) {
+            topSection
+            sortingSection
+            List(stocks) { stock in
+                NavigationLink {
+                    StockDetailView(
+                        stockService: viewModel.stockService,
+                        stock: stock
+                    )
+                } label: {
+                    StockRowView(
+                        stock: stock
+                    )
+                }
+            }
+            .listStyle(.plain)
+        }
+        .padding(.horizontal)
+    }
+}
+
 
 // MARK: Top Section to Show connection status and change connection
 private extension StocksListView {
@@ -36,17 +69,14 @@ private extension StocksListView {
             ConnectionStatusView(
                 status: viewModel.connectionStatus
             )
-
+            
             Spacer()
-
+            
             Button {
                 viewModel.toggleConnection()
             } label: {
                 Text(
-                    viewModel.connectionStatus
-                    == .connected
-                    ? viewModel.stopFeedTitle
-                    : viewModel.startFeedTitle
+                    viewModel.buttonTitle
                 )
             }
             .buttonStyle(.borderedProminent)
@@ -66,30 +96,6 @@ private extension StocksListView {
                 .tag(SortOption.priceChange)
         }
         .pickerStyle(.segmented)
-    }
-}
-
-// MARK: Stock List
-private extension StocksListView {
-    var stocksList: some View {
-        VStack(spacing: 16) {
-            topSection
-            sortingSection
-            List(viewModel.stocks) { stock in
-                NavigationLink {
-                    StockDetailView(
-                        stockService: viewModel.stockService,
-                        stock: stock
-                    )
-                } label: {
-                    StockRowView(
-                        stock: stock
-                    )
-                }
-            }
-            .listStyle(.plain)
-        }
-        .padding(.horizontal)
     }
 }
 

@@ -14,7 +14,7 @@ final class StockProvider: StockProviderProvidable {
     
     func generateRandomUpdate() -> StockPriceUpdate? {
         guard let randomStock = StockSymbol.allCases.randomElement() else { return nil }
-        let randomPrice = Double.random(in: 50...1000)
+        let randomPrice = Double.random(in: 100...500).rounded()
         return StockPriceUpdate(symbol: randomStock.rawValue, price: randomPrice)
     }
 }

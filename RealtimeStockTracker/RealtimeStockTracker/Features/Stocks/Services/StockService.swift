@@ -20,6 +20,7 @@ final class StockService: ObservableObject {
     // MARK: - Private Properties
     private let stockProvider: StockProviderProvidable
     private let webSocketClient: WebSocketClientProvidable
+    private var observerTask: Task<Void, Never>?
     private var serviceTask: Task<Void, Never>?
     
     // MARK: - Initializer
@@ -34,23 +35,15 @@ final class StockService: ObservableObject {
     }
     
     func connect() {
-        guard serviceTask == nil else { return }
-            
-        let connectionTask = Task {
-            await listenConnectionStatus()
-        }
-        
-        let messageTask = Task {
-            await listenMessages()
-        }
+        guard serviceTask == nil,
+              observerTask == nil else { return }
 
+        startListeners()
+        
         webSocketClient.connect()
 
         serviceTask = Task {
             await startStreaming()
-            
-            connectionTask.cancel()
-            messageTask.cancel()
         }
     }
     
@@ -58,10 +51,21 @@ final class StockService: ObservableObject {
         webSocketClient.disconnect()
         serviceTask?.cancel()
         serviceTask = nil
+        observerTask?.cancel()
+        observerTask = nil
     }
 }
 
 private extension StockService {
+    func startListeners() {
+        observerTask = Task {
+            async let connectionTask: Void = listenConnectionStatus()
+            async let messageTask: Void = listenMessages()
+            
+            _ = await (connectionTask, messageTask)
+        }
+    }
+    
     func startStreaming() async {
         while !Task.isCancelled {
             guard let update = stockProvider.generateRandomUpdate(),
@@ -77,7 +81,7 @@ private extension StockService {
     
     func listenConnectionStatus() async {
         for await status in webSocketClient.connectionStream() {
-            self.connectionStatus = status
+            connectionStatus = status
         }
     }
     

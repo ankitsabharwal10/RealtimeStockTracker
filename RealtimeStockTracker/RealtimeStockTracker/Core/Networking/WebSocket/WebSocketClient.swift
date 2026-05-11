@@ -29,6 +29,7 @@ final class WebSocketClient: WebSocketClientProvidable {
 // MARK: Connect/Disconnect
 extension WebSocketClient {
     func connect() {
+        guard socketTask == nil else { return }
         socketTask = session.webSocketTask(with: url)
         socketTask?.resume()
         latestConnectionStatus = .connected
@@ -40,12 +41,8 @@ extension WebSocketClient {
         socketTask?.cancel(with: .goingAway,
                            reason: nil)
         socketTask = nil
-        latestConnectionStatus = .disconnected
-        connectionStatusContinuation?.yield(.disconnected)
-        messageContinuation?.finish() // End of Iteration
-        connectionStatusContinuation?.finish() // End of Iteration
-        messageContinuation = nil
-        connectionStatusContinuation = nil
+        updateConnectionStatus(.disconnected)
+        finishStreams()
     }
     
     func send(_ text: String) async throws {
@@ -80,18 +77,40 @@ extension WebSocketClient {
             
             switch result {
             case .success(let message):
-                switch message {
-                case .string(let text):
-                    weakSelf.messageContinuation?.yield(text)
-                default:
-                    break
-                }
+                weakSelf.handleMessage(message)
                 weakSelf.receiveMessage()
-                
             case .failure(let error):
-                weakSelf.connectionStatusContinuation?.yield(.failed(.unknown(error.localizedDescription)))
-                weakSelf.messageContinuation?.finish(throwing: error)
+                weakSelf.handleFailure(error)
             }
         }
+    }
+}
+
+// MARK: Private Methods
+private extension WebSocketClient {
+    func updateConnectionStatus(_ status: ConnectionStatus) {
+        latestConnectionStatus = status
+        connectionStatusContinuation?.yield(status)
+    }
+    
+    func finishStreams() {
+        messageContinuation?.finish()
+        connectionStatusContinuation?.finish()
+        messageContinuation = nil
+        connectionStatusContinuation = nil
+    }
+    
+    func handleMessage(_ message: URLSessionWebSocketTask.Message) {
+        switch message {
+        case .string(let text):
+            messageContinuation?.yield(text)
+        default:
+            break
+        }
+    }
+
+    func handleFailure(_ error: Error) {
+        updateConnectionStatus(.failed(.unknown(error.localizedDescription)))
+        messageContinuation?.finish(throwing: error)
     }
 }

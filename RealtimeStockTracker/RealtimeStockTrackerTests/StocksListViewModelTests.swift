@@ -40,8 +40,13 @@ final class StocksListViewModelTests: XCTestCase {
 
 // MARK: Tests
 extension StocksListViewModelTests {
-    func testInitialStockEmpty() {
-        XCTAssertTrue(viewModel.stocks.isEmpty)
+    func testInitialState() {
+        switch viewModel.viewState {
+        case .idle:
+            XCTAssertTrue(true)
+        default:
+            XCTFail("Expected idle state")
+        }
     }
     
     func testInitialConnectionStatus() {
@@ -54,20 +59,47 @@ extension StocksListViewModelTests {
         XCTAssertTrue(!service.stocks.isEmpty)
     }
     
+    func testFetchStockSucces() async throws {
+        try await service.fetchStocks()
+        await Task.yield()
+
+        switch viewModel.viewState {
+        case .success(let stocks):
+            XCTAssertFalse(stocks.isEmpty)
+        default:
+            XCTFail("Expected success state")
+        }
+    }
+    
+    func testToggleConnectionDisconnectsSocket() {
+        viewModel.toggleConnection()
+        viewModel.toggleConnection()
+        XCTAssertEqual(viewModel.connectionStatus, .disconnected)
+    }
+    
     func testSortByPrice() async throws {
         try await service.fetchStocks()
         viewModel.sortOption = .price
-        let prices = viewModel.stocks.map({ $0.currentPrice })
-        XCTAssertEqual(prices,
-                       prices.sorted(by: >))
+        switch viewModel.viewState {
+        case .success(let stocks):
+            let prices = stocks.map { $0.currentPrice }
+            XCTAssertEqual(prices,
+                           prices.sorted(by: >))
+        default:
+            XCTFail("Expected success state")
+        }
     }
     
     func testSortByPriceChange() async throws {
         try await service.fetchStocks()
         viewModel.sortOption = .priceChange
-        let changes = viewModel.stocks.map({ $0.priceChange })
-        
-        XCTAssertEqual(changes,
-                       changes.sorted(by: >))
+        switch viewModel.viewState {
+        case .success(let stocks):
+            let prices = stocks.map { $0.priceChange }
+            XCTAssertEqual(prices,
+                           prices.sorted(by: >))
+        default:
+            XCTFail("Expected success state")
+        }
     }
 }
